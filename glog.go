@@ -19,6 +19,7 @@ const (
 	INFO  = 1
 	WARN  = 2
 	ERROR = 4
+	PANIC = 8
 )
 
 func (l LEVEL) String() string {
@@ -29,6 +30,8 @@ func (l LEVEL) String() string {
 		return "WARN"
 	case ERROR:
 		return "ERROR"
+	case PANIC:
+		return "PANIC"
 	default:
 		return "UNKNOWN"
 	}
@@ -85,7 +88,7 @@ func init() {
 		logFilePath = fmt.Sprintf("%s.log", os.Args[0])
 	}
 
-	SetLevel(INFO | WARN | ERROR)
+	SetLevel(INFO | WARN | ERROR | PANIC)
 	SetDebug(os.Getenv("DEBUG") == "debug")
 }
 
@@ -149,5 +152,25 @@ func Errorf(format string, v ...interface{}) {
 
 	if ERROR&level == ERROR {
 		print(ERROR, fmt.Sprintf(format, v...))
+	}
+}
+
+func Panic(v ...interface{}) {
+	lock.RLock()
+	defer lock.RUnlock()
+
+	if PANIC&level == PANIC {
+		print(PANIC, fmt.Sprintf("%s", v...))
+		panic(fmt.Sprintf("%s", v...))
+	}
+}
+
+func Panicf(format string, v ...interface{}) {
+	lock.RLock()
+	defer lock.RUnlock()
+
+	if PANIC&level == PANIC {
+		print(PANIC, fmt.Sprintf(format, v...))
+		panic(fmt.Sprintf(format, v...))
 	}
 }
