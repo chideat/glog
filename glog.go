@@ -106,7 +106,7 @@ func Info(v ...interface{}) {
 	defer lock.RUnlock()
 
 	if INFO&level == INFO {
-		print(INFO, fmt.Sprintf("%s", v...))
+		print(INFO, fmt.Sprintf("%v", v...))
 	}
 }
 
@@ -124,7 +124,7 @@ func Warn(v ...interface{}) {
 	defer lock.RUnlock()
 
 	if WARN&level == WARN {
-		print(WARN, fmt.Sprintf("%s", v...))
+		print(WARN, fmt.Sprintf("%v", v...))
 	}
 }
 
@@ -142,7 +142,7 @@ func Error(v ...interface{}) {
 	defer lock.RUnlock()
 
 	if ERROR&level == ERROR {
-		print(ERROR, fmt.Sprintf("%s", v...))
+		print(ERROR, fmt.Sprintf("%v", v...))
 	}
 }
 
@@ -160,8 +160,8 @@ func Panic(v ...interface{}) {
 	defer lock.RUnlock()
 
 	if PANIC&level == PANIC {
-		print(PANIC, fmt.Sprintf("%s", v...))
-		panic(fmt.Sprintf("%s", v...))
+		print(PANIC, fmt.Sprintf("%v", v...))
+		panic(fmt.Sprintf("%v", v...))
 	}
 }
 
