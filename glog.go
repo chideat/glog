@@ -92,13 +92,13 @@ func init() {
 	SetDebug(os.Getenv("DEBUG") == "debug")
 }
 
-func print(level LEVEL, data string) {
+func print(level LEVEL, data ...interface{}) {
 	_, file, line, ok := runtime.Caller(2)
 	if !ok {
 		file = "???"
 		line = 1
 	}
-	logger.Printf("[%s] %s:%d %s\n", level.String(), file, line, data)
+	logger.Printf("[%s] %s:%d %s\n", level.String(), file, line, fmt.Sprint(data...))
 }
 
 func Info(v ...interface{}) {
@@ -106,7 +106,7 @@ func Info(v ...interface{}) {
 	defer lock.RUnlock()
 
 	if INFO&level == INFO {
-		print(INFO, fmt.Sprintf("%v", v...))
+		print(INFO, v...)
 	}
 }
 
@@ -124,7 +124,7 @@ func Warn(v ...interface{}) {
 	defer lock.RUnlock()
 
 	if WARN&level == WARN {
-		print(WARN, fmt.Sprintf("%v", v...))
+		print(WARN, v)
 	}
 }
 
@@ -142,7 +142,7 @@ func Error(v ...interface{}) {
 	defer lock.RUnlock()
 
 	if ERROR&level == ERROR {
-		print(ERROR, fmt.Sprintf("%v", v...))
+		print(ERROR, v)
 	}
 }
 
@@ -160,8 +160,8 @@ func Panic(v ...interface{}) {
 	defer lock.RUnlock()
 
 	if PANIC&level == PANIC {
-		print(PANIC, fmt.Sprintf("%v", v...))
-		panic(fmt.Sprintf("%v", v...))
+		print(PANIC, v...)
+		panic(fmt.Sprint(v...))
 	}
 }
 
