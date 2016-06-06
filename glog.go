@@ -124,7 +124,7 @@ func Warn(v ...interface{}) {
 	defer lock.RUnlock()
 
 	if WARN&level == WARN {
-		print(WARN, v)
+		print(WARN, v...)
 	}
 }
 
@@ -142,7 +142,7 @@ func Error(v ...interface{}) {
 	defer lock.RUnlock()
 
 	if ERROR&level == ERROR {
-		print(ERROR, v)
+		print(ERROR, v...)
 	}
 }
 
