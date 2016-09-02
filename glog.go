@@ -83,7 +83,7 @@ func init() {
 
 	info, err := os.Stat(DEFAULT_LOG_PATH)
 	if err == nil && info.IsDir() {
-		logFilePath = path.Join(DEFAULT_LOG_PATH, fmt.Sprintf("%s.log", os.Args[0]))
+		logFilePath = path.Join(DEFAULT_LOG_PATH, fmt.Sprintf("%s.log", path.Base(os.Args[0])))
 	} else {
 		logFilePath = fmt.Sprintf("%s.log", os.Args[0])
 	}
