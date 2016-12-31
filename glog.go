@@ -52,6 +52,10 @@ func SetLevel(l LEVEL) {
 	lock.RUnlock()
 }
 
+func SetFlag(flag int) {
+	logger.SetFlags(flag)
+}
+
 func SetDebug(d bool) {
 	lock.Lock()
 	defer func() {
@@ -90,6 +94,7 @@ func init() {
 
 	SetLevel(INFO | WARN | ERROR | PANIC)
 	SetDebug(os.Getenv("DEBUG") == "debug")
+	SetFlag(logger.LstdFlags)
 }
 
 func print(level LEVEL, data ...interface{}) {
